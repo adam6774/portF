@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" href="path/to/your/favicon.png">
+    <title>HTB: Obscurity - Service Scanning Case Study</title> <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+</head>
+<body>
+
+    <header>
+        <div class="container">
+            <a href="index.html" class="logo">Portfolio.</a> 
+            <button class="hamburger" aria-label="Toggle navigation">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </button>
+            <nav id="main-nav">
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="index.html#about">About</a></li>
+                    <li><a href="index.html#whatido">What I Do</a></li>
+                    <li><a href="index.html#portfolio">Portfolio</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <section id="case-study-hero" style="background-color: #161b22; color: #c9d1d9; padding: 5rem 0; text-align: center;">
+            <div class="container">
+                <h1 style="font-size: 2.8rem; margin-bottom: 1rem;">HTB: Obscurity - Initial Recon & Service Scanning</h1>
+                <p style="font-size: 1.1rem; opacity: 0.8;">A foundational step in compromising a Hack The Box machine.</p>
+                <p style="font-size: 0.9rem; opacity: 0.6; margin-top: 1rem;">Date: June 2024 | Category: Reconnaissance, Network Scanning, CTF</p>
+            </div>
+        </section>
+
+        <section id="project-details" style="padding: 4rem 0; background-color: #0d1117; color: #c9d1d9;">
+            <div class="container" style="max-width: 900px;">
+                <div class="case-study-section">
+                    <h2>1. Project Overview & Objectives</h2>
+                    <p>This case study details the initial reconnaissance phase on a Hack The Box machine, "Obscurity". The primary objective was to thoroughly scan the target for open ports and identify running services, including their versions. This foundational step is crucial for mapping the attack surface and determining potential entry points for further exploitation.</p>
+                </div>
+
+                <div class="case-study-section">
+                    <h2>2. Methodology & Tools Used</h2>
+                    <p>Our methodology focused on comprehensive network scanning using Nmap, followed by basic banner grabbing to confirm service details. The main tool used was Nmap, with various flags to fine-tune the scan:</p>
+                    <ul>
+                        <li><strong>Nmap:</strong> The primary tool for port scanning and service version detection.</li>
+                        <li><strong>Netcat (nc):</strong> Used for manual banner grabbing on identified open ports to verify service information.</li>
+                    </ul>
+                    <h3>2.1. Initial Nmap Scan</h3>
+                    <p>We began with a quick Nmap scan to identify all open TCP ports:</p>
+                    <pre style="background-color: #161b22; padding: 1rem; border-radius: 8px; overflow-x: auto; font-size: 0.9rem;"><code>nmap -p- -T4 &lt;target_ip&gt;</code></pre>
+                    <p>This full-port scan identified several open ports, after which we proceeded with a more detailed version and script scan.</p>
+
+                    <h3>2.2. Detailed Nmap Scan (Service Version & Script Scan)</h3>
+                    <p>Once open ports were identified, a targeted scan was performed to detect service versions and run default Nmap scripts for common vulnerabilities:</p>
+                    <pre style="background-color: #161b22; padding: 1rem; border-radius: 8px; overflow-x: auto; font-size: 0.9rem;"><code>nmap -sC -sV -p22,80,445 &lt;target_ip&gt;</code></pre>
+                    <p><em>(Replace `22,80,445` with the actual open ports found in your -p- scan)</em></p>
+                </div>
+
+                <div class="case-study-section">
+                    <h2>3. Key Findings & Identified Services</h2>
+                    <p>The service scanning revealed the following critical open ports and services on the "Obscurity" machine:</p>
+                    
+                    <h3>3.1. Port 22: SSH (OpenSSH 8.2p1)</h3>
+                    <p><strong>Description:</strong> Standard Secure Shell service. Version `8.2p1` was identified. While this version is relatively recent and doesn't immediately suggest common exploits, it confirms SSH as a potential entry point for brute-forcing, credential stuffing, or exploiting authentication flaws if credentials are found later.</p>
+                    <pre style="background-color: #161b22; padding: 1rem; border-radius: 8px; overflow-x: auto; font-size: 0.9rem;"><code>PORT   STATE SERVICE VERSION
+22/tcp open  ssh     OpenSSH 8.2p1 Ubuntu 4ubuntu0.5 (Ubuntu Linux; protocol 2.0)</code></pre>
+
+                    <h3>3.2. Port 80: HTTP (Apache httpd 2.4.41)</h3>
+                    <p><strong>Description:</strong> A web server running Apache HTTP Server version `2.4.41`. This is a common entry point for web application vulnerabilities. Further enumeration of directories, technologies, and potential common flaws (e.g., directory listing, exposed `.git` repositories) would be the next step.</p>
+                    <pre style="background-color: #161b22; padding: 1rem; border-radius: 8px; overflow-x: auto; font-size: 0.9rem;"><code>PORT   STATE SERVICE VERSION
+80/tcp open  http    Apache httpd 2.4.41 ((Ubuntu))</code></pre>
+
+                    <h3>3.3. Port 445: SMB (Samba smbd 4.11.6)</h3>
+                    <p><strong>Description:</strong> Server Message Block (SMB) service, running Samba `4.11.6`. SMB is often a rich source of information leakage (e.g., anonymous shares, misconfigured permissions) and can be leveraged for credential relay attacks or remote code execution if older, vulnerable versions are present.</p>
+                    <pre style="background-color: #161b22; padding: 1rem; border-radius: 8px; overflow-x: auto; font-size: 0.9rem;"><code>PORT    STATE SERVICE VERSION
+445/tcp open  netbios-ssn Samba smbd 4.11.6</code></pre>
+                    
+                    <p><em>(You can add more services if your Nmap scans typically reveal them, e.g., FTP, PostgreSQL, etc.)</em></p>
+                </div>
+
+                <div class="case-study-section">
+                    <h2>4. Recommendations & Mitigation</h2>
+                    <p>Based on the service scanning phase, general security recommendations for maintaining secure services include:</p>
+                    <ul>
+                        <li>**Regular Patching:** Ensure all operating systems and running services (SSH, Apache, Samba) are kept up-to-date with the latest security patches to mitigate known vulnerabilities.</li>
+                        <li>**Principle of Least Privilege:** Configure services to run with the minimum necessary privileges.</li>
+                        <li>**Strong Configurations:** Review and harden default configurations of all services. For example, disable unnecessary features in Apache, restrict SSH access to specific users, and remove anonymous SMB shares.</li>
+                        <li>**Firewall Rules:** Implement robust firewall rules to restrict access to services from untrusted networks or hosts.</li>
+                        <li>**Monitoring:** Continuously monitor service logs for suspicious activity and unauthorized access attempts.</li>
+                    </ul>
+                </div>
+
+                <div class="case-study-section">
+                    <h2>5. Conclusion & Lessons Learned</h2>
+                    <p>The service scanning phase on "Obscurity" successfully provided a clear map of the target's exposed services. Identifying open ports and accurate service versions is paramount for the subsequent phases of a penetration test, guiding further enumeration and vulnerability assessment. This exercise reinforced the importance of systematic reconnaissance as the foundation for a successful exploitation strategy.</p>
+                </div>
+
+                <div style="text-align: center; margin-top: 4rem;">
+                    <a href="index.html#portfolio" class="btn btn-primary">← Back to Portfolio</a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; <span id="current-year"></span> Adam. All rights reserved.</p>
+            <div class="social-links">
+                <a href="https://github.com/Adam6774" target="_blank" aria-label="GitHub"><i class="fab fa-github"></i></a>
+                <a href="https://www.linkedin.com/in/abdullahi-adamu-a04962280" target="_blank" aria-label="LinkedIn"><i class="fab fa-linkedin"></i></a>
+            </div>
+            <p class="footer-note">Built with passion for cybersecurity.</p>
+        </div>
+    </footer>
+
+    <script src="assets/js/main.js"></script>
+</body>
+</html>

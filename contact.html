@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/png" href="path/to/your/favicon.png">
+    <title>Contact Adam | Penetration Tester Portfolio</title> <link rel="stylesheet" href="assets/css/style.css" />
+    <script src="index.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <a href="index.html" class="logo">Portfolio.</a> 
+            <button class="hamburger" aria-label="Toggle navigation" style="display:none;">
+                 <span class="bar"></span>
+                 <span class="bar"></span>
+                 <span class="bar"></span>
+            </button>
+            <nav id="main-nav">
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="index.html#about">About</a></li>
+                    <li><a href="index.html#whatido">What I Do</a></li> <li><a href="index.html#portfolio">Portfolio</a></li>
+                    <li><a href="contact.html" class="active">Contact</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <section id="contact" style="padding: 6rem 0; background-color: #0d1117; color: #c9d1d9; text-align: center;">
+        <div class="container">
+            <h2 class="section-title">Get In Touch</h2>
+            <p class="section-description">I'm always open to new opportunities, collaborations, or just a friendly chat about cybersecurity. Feel free to reach out!</p>
+
+            <div class="contact-details" style="margin-top: 3rem;">
+                <p><i class="fas fa-envelope"></i> Email: <a href="mailto:abdullahisuleima171@gmail.com">abdullahisuleima171@gmail.com</a></p>
+                <p><i class="fas fa-phone"></i> Phone: +234 7053661259</p>
+            </div>
+
+            <p style="margin-top: 2rem; margin-bottom: 1rem;">Connect with me on social media or send an email directly:</p>
+            <div class="social-links" style="margin-top: 1rem;">
+                <a href="https://github.com/Adam6774" target="_blank" aria-label="GitHub"><i class="fab fa-github"></i> @Adam6774</a>
+                <a href="https://www.linkedin.com/in/abdullahi-adamu-a04962280" target="_blank" aria-label="LinkedIn"><i class="fab fa-linkedin"></i> Abdullahi Adamu</a>
+            </div>
+
+            </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <p>&copy; <span id="current-year"></span> Adam. All rights reserved.</p>
+            <div class="social-links">
+                <a href="https://github.com/Adam6774" target="_blank" aria-label="GitHub"><i class="fab fa-github"></i></a>
+                <a href="https://www.linkedin.com/in/abdullahi-adamu-a04962280" target="_blank" aria-label="LinkedIn"><i class="fab fa-linkedin"></i></a>
+            </div>
+            <p class="footer-note">Built with passion for cybersecurity.</p>
+        </div>
+    </footer>
+    <script>
+        document.getElementById('current-year').textContent = new Date().getFullYear();
+    </script>
+</body>
+</html>

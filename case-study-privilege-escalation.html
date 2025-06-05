@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" href="path/to/your/favicon.png">
+    <title>Network Assessment: Privilege Escalation - Case Study</title> <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+</head>
+<body>
+
+    <header>
+        <div class="container">
+            <a href="index.html" class="logo">Portfolio.</a> 
+            <button class="hamburger" aria-label="Toggle navigation">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </button>
+            <nav id="main-nav">
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="index.html#about">About</a></li>
+                    <li><a href="index.html#whatido">What I Do</a></li>
+                    <li><a href="index.html#portfolio">Portfolio</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <section id="case-study-hero" style="background-color: #161b22; color: #c9d1d9; padding: 5rem 0; text-align: center;">
+            <div class="container">
+                <h1 style="font-size: 2.8rem; margin-bottom: 1rem;">Network Assessment: Internal Infra</h1>
+                <p style="font-size: 1.1rem; opacity: 0.8;">Focus on Privilege Escalation Techniques</p>
+                <p style="font-size: 0.9rem; opacity: 0.6; margin-top: 1rem;">Date: April 2024 | Category: Network Security, Privilege Escalation</p>
+            </div>
+        </section>
+
+        <section id="project-details" style="padding: 4rem 0; background-color: #0d1117; color: #c9d1d9;">
+            <div class="container" style="max-width: 900px;"> <div class="case-study-section">
+                    <h2>1. Project Overview & Objectives</h2>
+                    <p>This engagement involved an internal network security assessment focused on identifying vulnerabilities that could lead to privilege escalation on various Windows and Linux systems. The primary objective was to demonstrate potential attack paths an insider or an external attacker (after initial breach) could use to gain higher-level access within the network infrastructure.</p>
+                </div>
+
+                <div class="case-study-section">
+                    <h2>2. Methodology & Tools Used</h2>
+                    <p>Our methodology for privilege escalation involved extensive reconnaissance, vulnerability scanning, misconfiguration analysis, and post-exploitation enumeration. Key tools and techniques included:</p>
+                    <ul>
+                        <li><strong>Nessus:</strong> For initial vulnerability scanning across the network to identify low-hanging fruits and misconfigurations.</li>
+                        <li><strong>Metasploit Framework:</strong> Utilized for exploiting known vulnerabilities and establishing initial shells.</li>
+                        <li><strong>Wireshark:</strong> Network traffic analysis to identify sensitive information or unencrypted protocols.</li>
+                        <li><strong>PowerShell Empire / Covenant:</strong> For post-exploitation, lateral movement, and privilege escalation on Windows systems.</li>
+                        <li><strong>LinEnum/Privilege Escalation Awesome Script:</strong> For automated Linux privilege escalation enumeration.</li>
+                        <li><strong>Mimikatz:</strong> Post-exploitation tool for credential extraction on Windows.</li>
+                        <li><strong>CrackMapExec:</strong> For network enumeration and password spraying.</li>
+                    </ul>
+                </div>
+
+                <div class="case-study-section">
+                    <h2>3. Key Findings & Privilege Escalation Paths</h2>
+                    <p>Several critical escalation paths were identified across the internal network:</p>
+                    
+                    <h3>3.1. Misconfigured Service Permissions (Local Administrator)</h3>
+                    <p><strong>Description:</strong> A critical service on a Windows server was running with SYSTEM privileges, but its executable path had weak permissions, allowing a standard user to replace the executable with a malicious one. This granted instant SYSTEM-level access upon service restart.</p>
+                    <pre style="background-color: #161b22; padding: 1rem; border-radius: 8px; overflow-x: auto; font-size: 0.9rem;"><code>sc qc VulnerableService
+icacls C:\Program Files\VulnerableService\service.exe </code></pre>
+                    <p><strong>Impact:</strong> Complete control over the compromised server.</p>
+
+                    <h3>3.2. Unpatched Kernel Vulnerability (Linux Root)</h3>
+                    <p><strong>Description:</strong> An unpatched Linux server was vulnerable to a known kernel exploit (e.g., Dirty Pipe), allowing a local user to gain root privileges. This vulnerability was exploited via a compiled C exploit.</p>
+                    <pre style="background-color: #161b22; padding: 1rem; border-radius: 8px; overflow-x: auto; font-size: 0.9rem;"><code>./dirtypipe-exploit /etc/passwd </code></pre>
+                    <p><strong>Impact:</strong> Full compromise of the Linux server.</p>
+
+                    <h3>3.3. Weak Password Hash in Configuration File (Domain User to Local Admin)</h3>
+                    <p><strong>Description:</strong> A development server contained a configuration file with hardcoded, weakly hashed credentials for a local administrator account. This hash was easily cracked, granting local administrator access.</p>
+                    <pre style="background-color: #161b22; padding: 1rem; border-radius: 8px; overflow-x: auto; font-size: 0.9rem;"><code>hashcat -m 1000 -a 0 hash.txt passwordlist.txt</code></pre>
+                    <p><strong>Impact:</strong> Escalation from an unprivileged user to a local administrator on the development server.</p>
+
+                    <h3>3.4. Stored Credentials in Browser/Scripts (Lateral Movement Potential)</h3>
+                    <p><strong>Description:</strong> Several user workstations had browser saved credentials for administrative portals, or plaintext credentials embedded in old batch scripts, allowing for easy extraction and potential lateral movement.</p>
+                    <p><strong>Impact:</strong> Facilitated lateral movement and access to other sensitive systems.</p>
+                </div>
+
+                <div class="case-study-section">
+                    <h2>4. Recommendations & Mitigation</h2>
+                    <p>To prevent similar privilege escalation attempts, the following recommendations were provided:</p>
+                    <ul>
+                        <li>Implement **Principle of Least Privilege** across all user accounts and services.</li>
+                        <li>Regularly **patch operating systems and applications** to address known kernel and software vulnerabilities.</li>
+                        <li>Perform **regular permission reviews** on sensitive files, directories, and services to ensure they are not writable by unprivileged users.</li>
+                        <li>Enforce **strong password policies** and multi-factor authentication (MFA) wherever possible.</li>
+                        <li>Conduct **credential hygiene reviews** to eliminate hardcoded or easily extractable credentials.</li>
+                        <li>Implement **Endpoint Detection and Response (EDR)** solutions to detect and prevent malicious activity.</li>
+                        <li>Conduct **employee security awareness training** on secure coding practices and handling sensitive information.</li>
+                    </ul>
+                </div>
+
+                <div class="case-study-section">
+                    <h2>5. Conclusion & Lessons Learned</h2>
+                    <p>This assessment underscored that privilege escalation is often not a single exploit but a chain of misconfigurations and vulnerabilities. It highlighted the importance of comprehensive internal network assessments, including detailed enumeration of user permissions, services, and installed software. The project significantly enhanced my skills in post-exploitation, local enumeration, and understanding Windows/Linux security mechanisms.</p>
+                </div>
+
+                <div style="text-align: center; margin-top: 4rem;">
+                    <a href="index.html#portfolio" class="btn btn-primary">← Back to Portfolio</a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; <span id="current-year"></span> Adam. All rights reserved.</p>
+            <div class="social-links">
+                <a href="https://github.com/Adam6774" target="_blank" aria-label="GitHub"><i class="fab fa-github"></i></a>
+                <a href="https://www.linkedin.com/in/abdullahi-adamu-a04962280" target="_blank" aria-label="LinkedIn"><i class="fab fa-linkedin"></i></a>
+            </div>
+            <p class="footer-note">Built with passion for cybersecurity.</p>
+        </div>
+    </footer>
+
+    <script src="assets/js/main.js"></script>
+</body>
+</html>
